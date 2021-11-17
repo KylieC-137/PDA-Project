@@ -32,7 +32,9 @@ In each rule function
   ----------------------------------------------------------------HEADERS------------------------------------------------------------------------
   <br>
   #include <iostream>
+  #include <string>
   #include <queue>
+  #include <stack>
   
   using namespace std;
   
@@ -43,13 +45,19 @@ In each rule function
   
   //initializes queue (unread input) to an bn $
   //parameter: int n
-  //returns the initialized queue
-  queue<int> init_queue(int n);
+  //returns the initialized queue of form a^n b^n $
+  queue<char> init_queue(int n);
   
   //print the current queue
   //parameter: the unread queue
-  void print_queue (queue<int> q);
+  void print_queue (queue<char> q);
   
+  //print stack
+  //parameter: the current stack
+  void print_stack (stack<char> s);
+  
+  //find rule function
+  //parameters: current state - string, unread input - queue, stack - stack
 
   ---------------------------------------------------------------------MAIN----------------------------------------------------------------------
   Main{
@@ -58,19 +66,29 @@ In each rule function
     n = take_input();
     
     //initialize step = 0, initial state = p
-    step = 0;
-    state = p;
+    int step = 0;
+    string state = p;
     
     //intializing queue with a's b's
-    queue<int> unread = init_queue(n);
+    queue<char> unread = init_queue(n);
     
     //creating an empty stack
+    stack<char> stack;
     
-    stack s = stack(NULL);
-    while(queue != NULL && stack != NULL){
-      rule = applyRules(state, read, unread)
-    }
-  }
+    //variable to keep track of the current rule used
+    int rule_used = 0;
+  
+    //-------- TO DO -------
+    do {
+  
+    //rule_used = applyRules(state, read, unread)
+
+    
+  
+  
+  
+  
+    }while(!unread.empty() && !stack.empty());
   
   
   applyRules(state, read, unread){
@@ -91,26 +109,24 @@ In each rule function
     return n;
   }
   
-  queue<int> init_queue(int n)
+  queue<char> init_queue(int n)
   {
     queue<char> q;
     for (int i=0; i<n; i++)
-    {
       q.push('a');
-    }
+    
     for (int i=0; i<n; i++)
-    {
       q.push('b');
-    }
+
     q.push('$');
   
     return q;
   }
   
-  void print_queue (queue<int> q)
+  void print_queue (queue<char> q)
   {
     //creating a temp queue = unread_queue, so that our unread_queue stays the same
-    queue<int> temp = q;
+    queue<char> temp = q;
     while(!temp.empty())
     {
       cout << temp.front() << " ";
@@ -119,7 +135,21 @@ In each rule function
     // might need to add a "tab" here for formatting the table after the unread queue has been displayed
   }
   
+  void print_stack (stack<char> s)
+  {
+    // creating a temp stack as to not alter the values in our stack
+    stack<char> temp = s;
+    while (!s.empty())
+    {
+      cout << s.top();
+      s.pop();
+    }
+  }
   
+  
+  
+  
+//TODO  
   FindRules
   
   ApplyRule1{
