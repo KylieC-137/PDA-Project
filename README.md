@@ -159,31 +159,31 @@ In each rule function
       return 1;
   
     //rule 2
-    if (state == "q" && unread == 'a')
+    else if (state == "q" && unread == 'a')
       return 2;
   
     //rule 3
-    if (state == "qa" && stack == 'a')
+    else if (state == "qa" && stack == 'a')
       return 3;
    
     //rule 4
-    if (state == "q" && unread == 'b')
+    else if (state == "q" && unread == 'b')
       return 4;
   
     //rule 5
-    if (state == "qb" && stack = 'b')
+    else if (state == "qb" && stack = 'b')
       return 5;
   
     //rule 6
-    if (state == "q" && unread = '$')
+    else if (state == "q" && unread = '$')
       return 6;
     
     //rule 7
-    if (state == "qa" && stack = 'S')
+    else if (state == "qa" && stack = 'S')
       return 7;
   
     //rule 8
-    if (state == "qb" && stack = 'S')
+    else(state == "qb" && stack = 'S')
       return 8
   }
   
