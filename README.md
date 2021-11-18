@@ -153,7 +153,9 @@ In each rule function
   {
   
     //row of if statements (if yall have better ideas then we should do it)
-    
+    //we could also just change this function to make the changes directly
+    //instead of having another one -- it can still return an int of the rule used (thoughts?)
+
     // rule 1
     if (state == "p")
       return 1;
