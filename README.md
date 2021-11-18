@@ -81,9 +81,15 @@ In each rule function
     //variable to keep track of the current rule being used
     int rule;
   
-    //-------- TO DO -------
+    //gonna need a variable with the R rule used (i.e. rules 7 and 8)
+    //alternatively could just make a cout statement for that within that rule in the apply rule function
+  
+  
+  
+    
     do {
   
+    //-------- TO DO -------
     //rule = applyRules(state, read, unread)
 
     
