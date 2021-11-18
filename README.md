@@ -27,7 +27,7 @@ Main -> fuction takes 3 inputs -> returns rule used -> apply rule in separate fu
 In each rule function 
   If the unread input is empty
   
-  While loop condition is unread input is empty
+  While loop condition is unread input is not empty and stack is not empty
   
   ----------------------------------------------------------------HEADERS------------------------------------------------------------------------
   <br>
@@ -161,6 +161,7 @@ In each rule function
     //row of if statements (if yall have better ideas then we should do it)
     //we could also just change this function to make the changes directly
     //instead of having another one -- it can still return an int of the rule used (thoughts?)
+    //if rule 7 or 8 are used then we need to output the R rule (i.e. S -> aSb)
 
     // rule 1
     if (state == "p")
@@ -192,7 +193,7 @@ In each rule function
   
     //rule 8
     else(state == "qb" && stack = 'S')
-      return 8
+      return 8;
   }
   
   
