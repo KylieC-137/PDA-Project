@@ -58,6 +58,9 @@ In each rule function
   
   //find rule function
   //parameters: current state - string, unread input - queue, stack - stack
+  //returns an int (1-8) which corresponds to which rule to use
+  int find_rule(string &state, queue<char> unread, stack<char> stack);
+  
 
   ---------------------------------------------------------------------MAIN----------------------------------------------------------------------
   Main{
@@ -75,13 +78,13 @@ In each rule function
     //creating an empty stack
     stack<char> stack;
     
-    //variable to keep track of the current rule used
-    int rule_used = 0;
+    //variable to keep track of the current rule being used
+    int rule;
   
     //-------- TO DO -------
     do {
   
-    //rule_used = applyRules(state, read, unread)
+    //rule = applyRules(state, read, unread)
 
     
   
@@ -146,7 +149,43 @@ In each rule function
     }
   }
   
+  int find_rule(string &state, queue<char> unread, stack<char> stack)
+  {
   
+    //row of if statements (if yall have better ideas then we should do it)
+    
+    // rule 1
+    if (state == "p")
+      return 1;
+  
+    //rule 2
+    if (state == "q" && unread == 'a')
+      return 2;
+  
+    //rule 3
+    if (state == "qa" && stack == 'a')
+      return 3;
+   
+    //rule 4
+    if (state == "q" && unread == 'b')
+      return 4;
+  
+    //rule 5
+    if (state == "qb" && stack = 'b')
+      return 5;
+  
+    //rule 6
+    if (state == "q" && unread = '$')
+      return 6;
+    
+    //rule 7
+    if (state == "qa" && stack = 'S')
+      return 7;
+  
+    //rule 8
+    if (state == "qb" && stack = 'S')
+      return 8
+  }
   
   
 //TODO  
