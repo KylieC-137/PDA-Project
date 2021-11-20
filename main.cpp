@@ -9,7 +9,7 @@ queue<char> unread;
 typedef string state;
 typedef int rule;
 state currentState;
-
+int step;
 
 //applies rules
 //parameters: currentState, unread queue and current stack
@@ -52,16 +52,15 @@ queue<char> init_queue(int n);
 //returns an int (1-8) which corresponds to which rule to use
 int find_rule(queue<char> unread, stack<char> stack);
 
-//add each element of the string as a separate character into the queue
-void toCharQueue(char initString[50]);
-
 //prints whole line
-void printAll(queue<char> toRead,
-  stack<char> readInput, int stepNum){
+void printAll(queue<char> toRead, stack<char> readInput, int numStep){
+      cout<< numStep<< "\t"<<currentState << "\t";
       showq(toRead);
-      print_stack(readInput);
-      cout << stepNum << "\t" << currentState <<endl;
-
+      print_stack(readInput); 
+      int rulePrint = find_rule(toRead, readInput);
+      cout <<rulePrint<< "\t";
+      int rRule = 0;
+      cout <<rRule <<endl;
   }
 
 
@@ -80,7 +79,7 @@ int main(){
     }
 
     //initialize step = 0, initial state = p
-    int step = 0;
+    step = 0;
     currentState = "p";
 
     //intializing queue with a's b's
@@ -89,20 +88,26 @@ int main(){
     //creating an empty stack
 
     stack<char> read;
-    while (unread.empty() == false && read.empty() == false && step<9) {
 
+    //heading to display the process as we go
+    cout<< "Step \t" << "State \t" << "Read \t\t" << "Unread \t\t" << "Transition rule \t" << "R rule \n";
+
+    while (unread.empty() == false && step < 9) {
       applyRules(unread, read);
+      printAll(unread, read, step);
       step++;
 
     }
 
+
+
     //for testing purposes
     //delete for final project
-    printAll(unread, read, step);
+
 }
 
-void applyRules(queue<char> unread, stack<char> stack){
- // int ruleNum = find_rule(unread, stack);
+void applyRules(queue<char> unread, stack<char> read){
+    int ruleNum = find_rule(unread, read);
 }
 
 //void toCharQueue(char initString[50]){
@@ -136,31 +141,26 @@ int find_rule(queue<char> unread, stack<char> stack)
   // rule 1
   if (currentState == "p")
     return 1;
-
+  
   //rule 2
   else if (currentState == "q" && unread.front() == 'a')
     return 2;
-
+    
   //rule 3
   else if (currentState == "qa" && stack.top() == 'a')
-    return 3;
-
+    return 3; 
   //rule 4
   else if (currentState == "q" && unread.front() == 'b')
     return 4;
-
   //rule 5
   else if (currentState == "qb" && stack.top() == 'b')
     return 5;
-
   //rule 6
   else if (currentState == "q" && unread.front() == '$')
     return 6;
-
   //rule 7
   else if (currentState == "qa" && stack.top() == 'S')
     return 7;
-
   //rule 8
   else if(currentState == "qb" && stack.top() == 'S')
     return 8;
