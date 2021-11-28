@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <stack>
 #include <queue>
@@ -6,16 +7,18 @@ using namespace std;
 
 //Var and Function declarations
 queue<char> unread;
-typedef string state;
-typedef int rule;
-state currentState;
+string currentState;
 int step;
+string rRule;
+
+    //creating an empty read queue
+
+    stack<char> read;
 
 //applies rules
-//parameters: currentState, unread queue and current stack
-//changes global currentState and unread and stack according to rule
-void applyRules(queue<char> unread, stack<char> stack);
-
+//parameters: currentState, unread queue and current queue
+//changes global currentState and unread and queue according to rule
+void applyRules();
 
 //Shows the queue
 //parameter: queue to be printed
@@ -26,20 +29,19 @@ void showq(queue<char> gq)
         cout<<g.front()<< " ";
         g.pop();
     }
-    cout<< "\t";
+    
 }
 
 
   void print_stack (stack<char> s)
   {
-    // creating a temp stack as to not alter the values in our stack
+    // creating a temp queue as to not alter the values in our stack
     stack<char> temp = s;
     while (!s.empty() && s.top() != NULL)
     {
       cout << s.top() << " ";
       s.pop();
     }
-    cout<<"\t";
   }
 
 //initializes queue (unread input) to an bn $
@@ -48,19 +50,25 @@ void showq(queue<char> gq)
 queue<char> init_queue(int n);
 
 //find rule function
-//parameters: current state - string, unread input - queue, stack - stack
+//parameters: current state - string, unread input - queue, queue - QUEUE
 //returns an int (1-8) which corresponds to which rule to use
-int find_rule(queue<char> unread, stack<char> stack);
+int find_rule();
 
 //prints whole line
 void printAll(queue<char> toRead, stack<char> readInput, int numStep){
-      cout<< numStep<< "\t"<<currentState << "\t";
+      cout<< numStep<< setw(10) <<currentState <<setw(5);
       showq(toRead);
-      print_stack(readInput); 
-      int rulePrint = find_rule(toRead, readInput);
-      cout <<rulePrint<< "\t";
-      int rRule = 0;
-      cout <<rRule <<endl;
+      if(toRead.empty()){
+        cout<<"e ";
+        }
+        cout<< setw(10);
+      print_stack(readInput);
+      if(readInput.empty()){
+        cout <<"e ";
+        }
+      int rulePrint = find_rule();
+      cout <<setw(10) <<rulePrint;
+      cout <<setw(20)<<rRule <<endl;
   }
 
 
@@ -69,9 +77,10 @@ void printAll(queue<char> toRead, stack<char> readInput, int numStep){
 
 int main(){
 
-
+    rRule = "";
     //take input as a number n
     int n;
+    
     cout<<"Enter n (>0): ";
     cin>>n;
     if(n>0){
@@ -85,36 +94,85 @@ int main(){
     //intializing queue with a's b's
     //toCharQueue(stringIn);
 
-    //creating an empty stack
-
-    stack<char> read;
 
     //heading to display the process as we go
     cout<< "Step \t" << "State \t" << "Read \t\t" << "Unread \t\t" << "Transition rule \t" << "R rule \n";
 
-    while (unread.empty() == false && step < 9) {
-      applyRules(unread, read);
+    while (step < 9) {
       printAll(unread, read, step);
+      applyRules();
       step++;
 
     }
-
-
 
     //for testing purposes
     //delete for final project
 
 }
 
-void applyRules(queue<char> unread, stack<char> read){
-    int ruleNum = find_rule(unread, read);
+//rules
+// 1 (p,e,e) -> (q,S)
+// 2 (q,a,e) -> (qa,e)
+// 3 (qa,e,a) -> (q,e)
+// 4 (q,b,e) -> (qb,e)
+// 5 (qb,e,b) -> (q,e)
+// 6 (q,$,e) -> (q$,e)
+// 7 (qa,e,S) -> (qa,aSb)
+// 8 (qb,e,S) -> (qb,e)
+
+void applyRules(){
+    
+    int ruleNum = find_rule();
+    
+    if(ruleNum == 1){
+        read.push('S');
+        currentState = "q";
+        rRule = "";
+    }
+    else if(ruleNum == 2){
+        if(!unread.empty()){
+            unread.pop();
+        }
+        currentState = "qa";
+        rRule = "";
+    }
+    else if(ruleNum == 3){
+        read.pop();
+        currentState = "q";
+        rRule = "";
+    }
+    else if(ruleNum == 4){
+        unread.pop();
+        currentState = "qb";
+        rRule = "";
+    }
+    else if(ruleNum == 5){
+        read.pop();
+        currentState = "q";
+        rRule = "";
+    }
+    else if(ruleNum == 6){
+        unread.pop();
+        currentState = "q$";
+        rRule = "";
+    }
+    else if(ruleNum == 7){
+        read.pop();
+        read.push('b');
+        read.push('S');
+        read.push('a');
+        currentState = "qa";
+        rRule = "S -> aSb";
+    }
+    else if(ruleNum == 8){
+        read.pop();
+        currentState = "qb";
+        rRule = "S -> e";
+    }
+    
+    
 }
 
-//void toCharQueue(char initString[50]){
-//    for(int i = 0; i < 50; i++){
-//        unread.push(initString[i]);
-//    }
-//}
 
 queue<char> init_queue(int n)
  {
@@ -131,7 +189,7 @@ queue<char> init_queue(int n)
  }
 
 
-int find_rule(queue<char> unread, stack<char> stack)
+int find_rule()
 {
 
   //row of if statements
@@ -139,29 +197,39 @@ int find_rule(queue<char> unread, stack<char> stack)
   //if rule 7 or 8 are used then we need to output the R rule (i.e. S -> aSb)
 
   // rule 1
-  if (currentState == "p")
+  if (currentState == "p"){
     return 1;
+  }
   
   //rule 2
-  else if (currentState == "q" && unread.front() == 'a')
-    return 2;
+  else if (currentState == "q" && unread.front() == 'a'){
     
+    return 2;
+  }
   //rule 3
-  else if (currentState == "qa" && stack.top() == 'a')
+  else if (currentState == "qa" && read.top() == 'a'){
     return 3; 
+  }
   //rule 4
-  else if (currentState == "q" && unread.front() == 'b')
+  else if (currentState == "q" && unread.front() == 'b'){
     return 4;
+  }
   //rule 5
-  else if (currentState == "qb" && stack.top() == 'b')
+  else if (currentState == "qb" && read.top() == 'b'){
     return 5;
+  }
   //rule 6
-  else if (currentState == "q" && unread.front() == '$')
+  else if (currentState == "q" && unread.front() == '$'){
     return 6;
+  }
   //rule 7
-  else if (currentState == "qa" && stack.top() == 'S')
+  else if (currentState == "qa" && read.top() == 'S'){
     return 7;
+  }
   //rule 8
-  else if(currentState == "qb" && stack.top() == 'S')
+  else if(currentState == "qb" && read.top() == 'S'){
     return 8;
+  }
+  //default
+
 }
