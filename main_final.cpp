@@ -78,8 +78,6 @@ int main()
       ruleApplied1();
       step++;
       rule = 1;
-      printALL(step, state, rule);
-
     }
 
     if(state == "q")
@@ -88,22 +86,19 @@ int main()
       {
         ruleApplied6();
         step++;
-        rule = 6;
-        printALL(step, state, rule);            
+        rule = 6;           
       }
       else if(unreadInput.top() == 'b')
       {
         ruleApplied4();
         step++;
-        rule = 4;
-        printALL(step, state, rule);   
+        rule = 4;  
       }
       else
       {
         ruleApplied2();
         step++;
         rule = 2;
-        printALL(step, state, rule); 
       }
     }
     if(state == "qa")
@@ -113,14 +108,12 @@ int main()
         ruleApplied7();
         step++;
         rule = 7;
-        printALL(step, state, rule); 
       }
       else
       {
         ruleApplied3();
         step++;
         rule = 3;
-        printALL(step, state, rule); 
       }
     }
     if(state == "qb")
@@ -130,21 +123,19 @@ int main()
         ruleApplied8();
         step++;
         rule = 8;
-        printALL(step, state, rule); 
       }
       else
       {
         ruleApplied5();
         step++;
         rule = 5;
-        printALL(step, state, rule);
       }
     }
-    
+    printALL(step, state, rule);
   }
 
   return 0;
-  }
+}
 
 
 
