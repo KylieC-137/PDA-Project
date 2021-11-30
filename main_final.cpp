@@ -78,6 +78,7 @@ int main()
       ruleApplied1();
       step++;
       rule = 1;
+      printALL(step, state, rule);
     }
 
     if(state == "q")
@@ -100,6 +101,7 @@ int main()
         step++;
         rule = 2;
       }
+      printALL(step, state, rule);
     }
     if(state == "qa")
     {
@@ -115,6 +117,7 @@ int main()
         step++;
         rule = 3;
       }
+      printALL(step, state, rule);
     }
     if(state == "qb")
     {
@@ -130,12 +133,13 @@ int main()
         step++;
         rule = 5;
       }
+      printALL(step, state, rule);
     }
-    printALL(step, state, rule);
+    
   }
 
   return 0;
-  }
+}
 
 
 
@@ -176,10 +180,10 @@ void printStack(stack<char> s)
     //string to store the stack -> needed to make setw work
     string set;
 
-    while (!s.empty())
+    while (!temp.empty())
     {
-      set+= s.top();
-      s.pop();
+      set+= temp.top();
+      temp.pop();
     }
 
     cout << set;
@@ -282,3 +286,5 @@ void printALL(int step, string state, int rule)
 
     cout << endl;
 }
+
+
