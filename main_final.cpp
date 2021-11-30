@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <stack>
+#include <iomanip>
 using namespace std;
 
 void ruleApplied1();
@@ -13,19 +14,26 @@ void ruleApplied6();
 void ruleApplied7();
 void ruleApplied8();
 
+//prints to terminal a stack
 void printStack(stack <char>);
 
-void enter();
-string createString(n);
+//asks user for input "n"
+//@post: returns n given by the user, n is >= 0
+int enter();
+
+//@pre: n >= 0
+//@post: returns an intialized stack (unread input)
+stack<char> createStack(int n);
+
 
 stack <char> unreadInput;
+
 stack <char> topOfStack;
 
-int n;
+//function that takes care of outputting and formatting the output table
+//@parameters: current step, state of the machine, and current rule being used
+void printALL(int step, string state, int rule);
 
-string input;
-
-int counter = 0;
 
 string state;
 
@@ -35,35 +43,43 @@ int main()
 {
   state = "p";
   int step = 0;
-  enter();
-  input = createString(n);
-  
-  for (int i = 0; i <input.length(); i++)
-  {
-    char in = input.at(i);
-    unreadInput.push(in);
-  }
-  
+
+  //asking for user input
+  int n = enter();
+
+  //initializing the unread input stack
+  unreadInput = createStack(n);
+
+
+  int rule = -1;
+ 
+
   printStack(unreadInput);
   cout << endl;
   
-  cout << "Step: " << step << " | " << "State: " << state << " | " << "Unread Input: ";
-  printStack(unreadInput);
+  //table headers
+  cout << left << setw(10) << setfill(' ') << "STEP" 
+       << left << setw(10) << setfill(' ') << "STATE"
+       << left << setw(24) << setfill(' ') << "UNREAD INPUT"
+       << left << setw(24) << setfill(' ') << "STACK" 
+       << left << setw(10) << setfill(' ') << "RULE" 
+       << "RRULE \n";
+
+  //print initial state of machine
+  printALL(step, state, rule);
   
-  cout << " | " << "Stack: e" << " | " << "Rule Used: -" << " | " << "R Used: -" << " | " << endl;
-  
+
+  //while loop that will call on functions to apply rules depending on the
+  //current state and the top of both the unread input and stack
   while(!unreadInput.empty())
   {
     if (state == "p")
     {
       ruleApplied1();
       step++;
+      rule = 1;
+      printALL(step, state, rule);
 
-      cout << "Step: " << step << " | " << "State: " << state << " | " << "Unread Input: ";
-      printStack(unreadInput);
-      cout << " | " << "Stack: ";
-      printStack(topOfStack);
-      cout << " | " << "Rule Used: 1" << " | " << "R Used: - " << " | " << endl;
     }
 
     if(state == "q")
@@ -72,31 +88,22 @@ int main()
       {
         ruleApplied6();
         step++;
-        cout << "Step: " << step << " | " << "State: " << state << " | " << "Unread Input: ";
-        printStack(unreadInput);
-        cout << " | " << "Stack: ";
-        printStack(topOfStack);
-        cout << " | " << "Rule Used: 6" << " | " << "R Used: - " << " | " << endl;
+        rule = 6;
+        printALL(step, state, rule);            
       }
       else if(unreadInput.top() == 'b')
       {
         ruleApplied4();
         step++;
-        cout << "Step: " << step << " | " << "State: " << state << " | " << "Unread Input: ";
-        printStack(unreadInput);
-        cout << " | " << "Stack: ";
-        printStack(topOfStack);
-        cout << " | " << "Rule Used: 4" << " | " << "R Used: - " << " | " << endl;
+        rule = 4;
+        printALL(step, state, rule);   
       }
       else
       {
         ruleApplied2();
         step++;
-        cout << "Step: " << step << " | " << "State: " << state << " | " << "Unread Input: ";
-        printStack(unreadInput);
-        cout << " | " << "Stack: ";
-        printStack(topOfStack);
-        cout << " | " << "Rule Used: 2" << " | " << "R Used: - " << " | " << endl;
+        rule = 2;
+        printALL(step, state, rule); 
       }
     }
     if(state == "qa")
@@ -105,21 +112,15 @@ int main()
       {
         ruleApplied7();
         step++;
-        cout << "Step: " << step << " | " << "State: " << state << " | " << "Unread Input: ";
-        printStack(unreadInput);
-        cout << " | " << "Stack: ";
-        printStack(topOfStack);
-        cout << " | " << "Rule Used: 7" << " | " << "R Used: S -> aSb" << " | " << endl;
+        rule = 7;
+        printALL(step, state, rule); 
       }
       else
       {
         ruleApplied3();
         step++;
-        cout << "Step: " << step << " | " << "State: " << state << " | " << "Unread Input: ";
-        printStack(unreadInput);
-        cout << " | " << "Stack: ";
-        printStack(topOfStack);
-        cout << " | " << "Rule Used: 3" << " | " << "R Used: - " << " | " << endl;
+        rule = 3;
+        printALL(step, state, rule); 
       }
     }
     if(state == "qb")
@@ -128,90 +129,87 @@ int main()
       {
         ruleApplied8();
         step++;
-        cout << "Step: " << step << " | " << "State: " << state << " | " << "Unread Input: ";
-        printStack(unreadInput);
-        cout << " | " << "Stack: ";
-        printStack(topOfStack);
-        cout << " | " << "Rule Used: 8" << " | " << "R Used: S -> e" << " | " << endl;
+        rule = 8;
+        printALL(step, state, rule); 
       }
       else
       {
         ruleApplied5();
         step++;
-        cout << "Step: " << step << " | " << "State: " << state << " | " << "Unread Input: ";
-        printStack(unreadInput);
-        cout << " | " << "Stack: ";
-        counter = 0;
-        printStack(topOfStack);
-        cout << " | " << "Rule Used: 5" << " | " << "R Used: - " << " | " << endl;
+        rule = 5;
+        printALL(step, state, rule);
       }
     }
-    }
+    
+  }
+
   return 0;
   }
 
 
 
-void enter()
+int enter()
 {
-  cout << "Please enter 'n' defined by L = {a^n b^n | n >= 0}" << endl;
-  cin >> n;
+  int num;
+  do{
+      cout << "Please enter 'n' defined by L = {a^n b^n | n >= 0}" << endl;
+      cin >> num;
+  }while(num<0);
+
+  return num;
 }
 
-string createString(n)
+stack<char> createStack(int n)
 {
-  string s;
+  stack<char> s;
+  
+  s.push('$');
+
+  for (int i = 0; i < n; i++)
+    s.push('b');
   
   for (int i = 0; i < n; i++)
-    s += "a";
+
+    s.push('a');
   
-  for (int i = 0; i < n; i++)
-    s += "b";
-  
-  s += "$";
   
   return s;
 }
 
 
-void printStack(stack <char> s)
+void printStack(stack<char> s)
 {
-  if(s.empty())
-  {
-    if(counter == 0)
+    // creating a temp stack as to not alter the values in our stack
+    stack<char> temp = s;
+
+    //string to store the stack -> needed to make setw work
+    string set;
+
+    while (!s.empty())
     {
-      cout << "e";
-      return;
+      set+= s.top();
+      s.pop();
     }
-    if(counter != 0)
-      return;
-  }
-  char x = s.top();
-  s.pop();
-  cout << x << " ";
-  counter++;
-  printStack(s);
-  s.push(x);
+
+    cout << set;
+
 }
 
 void ruleApplied1()
 {
   state = "q";
   topOfStack.push('S');
-  counter=0;
 }
 
 void ruleApplied2()
 {
   state = "qa";
-  counter=0;
   unreadInput.pop();
 }
 
 void ruleApplied3()
 {
   state = "q";
-  counter=0;
   topOfStack.pop();
 }
 
@@ -246,4 +244,50 @@ void ruleApplied8()
 {
   state = "qb";
   topOfStack.pop();
+}
+
+void printALL(int step, string state, int rule)
+{
+    char sep = ' ';
+    int width1 = 10;
+    int width2 = 24;
+
+    //print step and state
+    cout << setw(width1) << setfill(sep) << step 
+         << setw(width1) << setfill(sep) << state  
+         << setw(width2) << setfill(sep);
+
+    //print unread input
+    if (!unreadInput.empty())
+        printStack(unreadInput);
+    else
+        cout << "e";
+
+    cout << setw(width2) << setfill(sep);
+    
+    //print stack
+    if (!topOfStack.empty())
+        printStack(topOfStack);
+    else if (step == 0)
+        cout << "-";
+    else
+        cout << "e";
+    
+    //print rule used
+    cout << setw(width1) << setfill(sep);
+    if(rule >=0)
+        cout << rule;
+    else
+        cout << "-";
+
+    //print/determine if rrule was used
+    cout << setw(width1) << setfill(sep);
+    if (rule == 7)
+        cout << "S -> aSb";
+    else if (rule == 8)
+        cout << "S -> e";
+    else
+        cout << "-";
+
+    cout << endl;
 }
