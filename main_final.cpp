@@ -92,7 +92,7 @@ int main()
       {
         ruleApplied4();
         step++;
-        rule = 4;  
+        rule = 4;   
       }
       else
       {
@@ -107,7 +107,7 @@ int main()
       {
         ruleApplied7();
         step++;
-        rule = 7;
+        rule = 7; 
       }
       else
       {
@@ -135,7 +135,7 @@ int main()
   }
 
   return 0;
-}
+  }
 
 
 
